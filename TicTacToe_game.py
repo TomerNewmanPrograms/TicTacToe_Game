@@ -1,13 +1,15 @@
 import sys
 import random
 
+
+#Cell on the board class
 class Cell:
      def __init__(self,x=-1,y=-1):
          self.x = x
          self.y = y
 
 
-
+#Printing the board
 def PrintGame(TicTacToeMatrix):
     PrintHeadLine()
     for i in range(0,3):
@@ -22,11 +24,11 @@ def PrintGame(TicTacToeMatrix):
                 sys.stdout.write('   |')
         sys.stdout.write('\n')
 
-
+#printing the numbers in the first row
 def PrintHeadLine():
     print("\n   1   2   3")
 
-
+#Printing the introduction
 def PrintPregame():
     print("\nWelcome to TicTacToe!")
     pawn = (input("Please choose X/O:  "))
@@ -34,6 +36,7 @@ def PrintPregame():
         pawn = (input("Please choose only X/O!:  "))
     return pawn
 
+#receiving from the user an input choice
 def InputInt(string):
     print(string)
     inp = input()
@@ -43,9 +46,10 @@ def InputInt(string):
     except:
         return -1
 
-
+#Making the Player Move
 def MyMove(TicTacToeMatrix,MyPawn):
     cellChoice = Cell()
+    #Getting from the User the next move
     print("now its your turn to choose an empty cell!")
     cellChoice.x = InputInt("please select row number between 1 and 3:  ")-1
     cellChoice.y=  InputInt("please select col number between 1 and 3:  ")-1
@@ -62,7 +66,7 @@ def MyMove(TicTacToeMatrix,MyPawn):
     else:
         return False
 
-
+#checking if Pawn Won
 def isWon (TicTacToeMatrix,Pawn,cellChoice) :
     if(TicTacToeMatrix[cellChoice.x][0] == Pawn and TicTacToeMatrix[cellChoice.x][1] == Pawn and TicTacToeMatrix[cellChoice.x][2] == Pawn):
         print("\n",Pawn,"WON!!!")
@@ -81,7 +85,7 @@ def isWon (TicTacToeMatrix,Pawn,cellChoice) :
     else:
         return False
 
-
+#Checking for a Tie
 def isTied (TicTacToeMatrix):
     for i in range(0,3):
         for j in range(0,3):
@@ -90,14 +94,15 @@ def isTied (TicTacToeMatrix):
     print("\nTIED!!!")
     return True
 
-def ComputerMove(TicTacToeMatrix,MyPawn,OposPawn):
-    
+#Called when its the computer's turn
+def ComputerMove(TicTacToeMatrix,MyPawn,OposPawn): 
+    #if the computer almost winning  
     TargetCell = oneStepFromWin(TicTacToeMatrix,OposPawn)
     if TargetCell.x != -1 and TargetCell.y != -1:
         TicTacToeMatrix[TargetCell.x][TargetCell.y] = OposPawn
         print("\n",OposPawn,"WON!!!")
         return True
-
+    #if the User almost winning
     TargetCell = oneStepFromWin(TicTacToeMatrix,MyPawn)
 
     if TargetCell.x != -1 and TargetCell.y != -1:
@@ -108,7 +113,7 @@ def ComputerMove(TicTacToeMatrix,MyPawn,OposPawn):
     TicTacToeMatrix[TargetCell.x][TargetCell.y] = OposPawn
     return isTied (TicTacToeMatrix)
 
-
+#returning a random empty cell
 def RandCell(TicTacToeMatrix):
     EmptyPosList = []
     for i in range (0,3):
@@ -120,7 +125,7 @@ def RandCell(TicTacToeMatrix):
 
 
 
-
+#checking if Pawn is one step from winning the game
 def oneStepFromWin(TicTacToeMatrix,Pawn):
     TargetCellRow = Cell()
     TargetCellCol = Cell()
@@ -130,12 +135,14 @@ def oneStepFromWin(TicTacToeMatrix,Pawn):
     counterSpaceCol = 0
     for i in range(0,3):
         for j in range(0,3):
+            #Row check
             if (TicTacToeMatrix[i][j] == Pawn):
                 counterPawnRow += 1
             if (TicTacToeMatrix[i][j] == " "):
                 counterSpaceRow += 1
                 TargetCellRow = Cell(i,j)
             if (TicTacToeMatrix[j][i] == Pawn):
+                #Col check
                 counterPawnCol += 1
             if (TicTacToeMatrix[j][i] == " "):
                 counterSpaceCol += 1
@@ -157,7 +164,8 @@ def oneStepFromWin(TicTacToeMatrix,Pawn):
     counterPawnLB = 0
     counterSpaceLB = 0
     counterPawnRB = 0
-    counterSpaceRB = 0            
+    counterSpaceRB = 0
+    #diagonal lines check            
     for i in range(0,3):
         if (TicTacToeMatrix[i][i] == Pawn):
             counterPawnLB += 1
